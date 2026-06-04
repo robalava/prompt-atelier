@@ -86,6 +86,9 @@ h1{font-size:20px;font-weight:600;margin-bottom:4px}
 .ai-link-firefly{background:#E8441C;color:#fff}
 .ai-link-leonardo{background:#6B3FD4;color:#fff}
 .ai-note{font-size:11px;color:#bbb;margin-top:1rem;line-height:1.6;border-top:1px solid #f0f0f0;padding-top:.75rem}
+
+/* 顔相学 */
+.sp.on{background:#F3E8FC;border-color:#C9A8E0;color:#5B2882}
 </style>
 </head>
 <body>
@@ -98,12 +101,14 @@ h1{font-size:20px;font-weight:600;margin-bottom:4px}
   <span class="lgd"><span class="ld" style="background:#1D9E75"></span>体格</span>
   <span class="lgd"><span class="ld" style="background:#EF9F27"></span>世界観</span>
   <span class="lgd"><span class="ld" style="background:#D85A30"></span>画風</span>
+  <span class="lgd"><span class="ld" style="background:#8B4F9E"></span>顔相学</span>
   <span class="lgd"><span class="ld" style="background:#378ADD"></span>基本属性</span>
   <span class="lgd"><span class="ld" style="background:#639922"></span>カラー</span>
   <span class="lgd"><span class="ld" style="background:#BA7517"></span>服装</span>
 </div>
 <div class="tabs">
   <button class="tab on" onclick="sw('base')">基本属性</button>
+  <button class="tab" onclick="sw('physio')">🔮 顔相学</button>
   <button class="tab" onclick="sw('color')">カラー・外見</button>
   <button class="tab" onclick="sw('face')">顔・表情</button>
   <button class="tab" onclick="sw('emotion')">感情・表情</button>
@@ -123,6 +128,59 @@ h1{font-size:20px;font-weight:600;margin-bottom:4px}
     <div class="sl">人種・民族的背景</div>
     <div id="ethnicity-container"></div>
   </div>
+</div>
+
+
+<!-- 顔相学タイプ -->
+<div id="tb-physio" class="panel">
+
+  <div class="sec" style="background:#F9F4FD;border-color:#C9A8E0;margin-bottom:.75rem">
+    <div class="sl" style="color:#8B4F9E">🔮 相貌心理学（コルマン理論）について</div>
+    <p style="font-size:12px;color:#666;line-height:1.75">フランスの医師ルイ・コルマンが体系化した理論です。顔を<strong>3つのゾーン</strong>（上帯＝知性、中帯＝感情、下帯＝本能）と<strong>拡張／収縮</strong>の軸で読み解きます。以下から選ぶと、顔相学的に整合した特徴がプロンプトに自動反映されます。複数選択可能ですが、矛盾する組み合わせは避けることをお勧めします。</p>
+  </div>
+
+  <!-- 主導ゾーン -->
+  <div class="sec" style="margin-bottom:.75rem">
+    <div class="sl" style="color:#8B4F9E">主導ゾーン（最も発達した顔の領域）</div>
+    <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">顔を上・中・下に三分割したとき、どの領域が最も存在感があるか</p>
+    <div class="chips" id="c-pzone"></div>
+  </div>
+
+  <!-- 拡張・収縮 -->
+  <div class="r2">
+    <div class="sec">
+      <div class="sl" style="color:#8B4F9E">拡張／収縮タイプ</div>
+      <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">顔全体の広がり・引き締まり</p>
+      <div class="chips" id="c-pexpand"></div>
+    </div>
+    <div class="sec">
+      <div class="sl" style="color:#8B4F9E">顔の緊張度</div>
+      <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">筋肉の張り・皮膚の質感</p>
+      <div class="chips" id="c-ptension"></div>
+    </div>
+  </div>
+
+  <!-- 顔の形態 -->
+  <div class="r2">
+    <div class="sec">
+      <div class="sl" style="color:#8B4F9E">顔の形態タイプ</div>
+      <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">コルマンの基本4形態</p>
+      <div class="chips" id="c-pform"></div>
+    </div>
+    <div class="sec">
+      <div class="sl" style="color:#8B4F9E">目の配置・深さ</div>
+      <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">眼窩の深さと目の突出度</p>
+      <div class="chips" id="c-peye"></div>
+    </div>
+  </div>
+
+  <!-- 性格傾向プリセット -->
+  <div class="sec" style="background:#F9F4FD;border-color:#C9A8E0">
+    <div class="sl" style="color:#8B4F9E">✨ 性格タイプ・プリセット（一括設定）</div>
+    <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">選ぶと上の項目が自動的に組み合わさります。個別調整も可能です。</p>
+    <div class="chips" id="c-ppreset"></div>
+  </div>
+
 </div>
 
 <!-- カラー・外見 -->
@@ -654,6 +712,78 @@ const G = {
     {jp:'俯瞰',en:"high angle bird's eye view"},
     {jp:'横顔',en:'profile side view portrait'},
   ]},
+
+  // ========== 顔相学データ ==========
+  pzone:{cls:'sp',multi:false,items:[
+    {jp:'上帯主導（知性型）― 額が広く丸みを帯びて発達',
+     en:'developed upper facial zone, broad high forehead with rounded fullness, intellectually dominant face, prominent brow ridge with cerebral quality',
+     desc:'知性・抽象思考・観念の世界で力を発揮。論理的で内省的。'},
+    {jp:'中帯主導（感情型）― 目・鼻・頬が豊かで存在感がある',
+     en:'developed mid-facial zone, expressive eyes and prominent cheekbones, emotionally rich face, sensitive perceptive features with strong social presence',
+     desc:'感受性・共感力・社交性が高い。芸術的センスを持つ。'},
+    {jp:'下帯主導（本能型）― 口・顎・下顎が力強く発達',
+     en:'developed lower facial zone, strong jaw and full lips, powerful chin, instinct-driven face with vital animal energy, dominant lower third',
+     desc:'生命力・意志力・行動力が強い。現実的で実行力がある。'},
+    {jp:'上帯＋中帯（知性×感情）― 額と目元が共に豊か',
+     en:'balanced upper and mid facial zones, broad forehead combined with expressive eyes, intellectually sensitive face, thoughtful and emotionally aware',
+     desc:'知性と感受性を兼ね備えた芸術家・哲学者タイプ。'},
+    {jp:'中帯＋下帯（感情×本能）― 目元と顎が共に力強い',
+     en:'balanced mid and lower facial zones, expressive eyes with strong jaw, emotionally passionate face, sensual and driven character',
+     desc:'情熱的で行動的。感情と本能が直結した強さを持つ。'},
+    {jp:'三帯均等（バランス型）― 上中下が均等に発達',
+     en:'harmoniously balanced facial zones, equal development of forehead, mid-face, and jaw, well-proportioned features, versatile adaptive personality',
+     desc:'知性・感情・本能がバランスよく統合された万能型。'},
+  ]},
+  pexpand:{cls:'sp',multi:false,items:[
+    {jp:'拡張型 ― 顔が丸みを帯びて広がる・パーツが豊か',
+     en:'expansive open facial structure, rounded generous features, wide face with soft outward-spreading quality, receptive and extroverted appearance',
+     desc:'外向き・受容的・環境に開かれている。おおらかで社交的。'},
+    {jp:'収縮型 ― 顔が引き締まり・パーツが内側に凝縮',
+     en:'contracted concentrated facial structure, features drawn inward, narrow refined face with tense quality, introverted focused appearance',
+     desc:'内向き・集中力・精神性が高い。防衛的だが深みがある。'},
+    {jp:'拡張優位（収縮要素も持つ）',
+     en:'primarily expansive face with some concentrated features, outwardly open yet internally disciplined appearance',
+     desc:'基本は開放的だが、内なる規律も持つ複合型。'},
+    {jp:'収縮優位（拡張要素も持つ）',
+     en:'primarily contracted face with some expansive elements, inwardly focused yet capable of openness',
+     desc:'基本は内向きだが、状況に応じて開放できる複合型。'},
+  ]},
+  ptension:{cls:'sp',multi:false,items:[
+    {jp:'高緊張 ― 筋肉が張り・輪郭がくっきり・皮膚が薄い',
+     en:'high facial muscle tone, sharp defined contours, taut skin, angular precise features, alert tense expression',
+     desc:'意志が強く・反応が速い。神経質だが集中力が高い。'},
+    {jp:'中緊張 ― 適度な張りと柔らかさのバランス',
+     en:'moderate facial tone, balanced between definition and softness, composed natural features',
+     desc:'安定・適応力・バランス感覚に優れる。'},
+    {jp:'低緊張 ― 筋肉が柔らかく・輪郭が丸みを帯びる',
+     en:'low facial muscle tone, soft rounded contours, relaxed gentle features, placid unhurried expression',
+     desc:'ゆったりとした気質。穏やかで包容力がある。'},
+  ]},
+  pform:{cls:'sp',multi:false,items:[
+    {jp:'平面型 ― 顔が平らで凹凸が少ない・受容的',
+     en:'flat facial profile, minimal facial relief, smooth planar features, receptive open appearance without prominent protrusions',
+     desc:'環境への適応力が高く・印象を受け取りやすい受容型。'},
+    {jp:'浮彫型 ― 顔に凹凸があり・パーツが際立つ・能動的',
+     en:'sculpted facial relief, prominent features with strong three-dimensional quality, bold projecting nose and brow, active assertive appearance',
+     desc:'自分の意志で環境に働きかける能動型・印象が強い。'},
+    {jp:'前方型 ― 顔が前方に突き出す・積極的',
+     en:'forward projecting facial profile, features thrust forward, prominent chin and brow, aggressive forward-leaning appearance',
+     desc:'積極的・外向きのエネルギーを持つ。行動的で押しが強い。'},
+    {jp:'後退型 ― 顔が後方に傾く・内省的',
+     en:'receding facial profile, features sloping backward, receding chin, contemplative inward-looking appearance',
+     desc:'内省的・思索的。行動より思考を先行させる傾向。'},
+  ]},
+  peye:{cls:'sp',multi:false,items:[
+    {jp:'深く落ちくぼんだ目 ― 眼窩が深い・内省・観察',
+     en:'deep-set eyes recessed in prominent brow ridge, shadowed eye sockets, observant contemplative gaze from within cave-like orbits',
+     desc:'観察力・内省力が高い。外部から距離を置いて見る傾向。'},
+    {jp:'突出した目 ― 目が前に出ている・感受性・開放',
+     en:'protruding prominent eyes, eyes that project forward from the face, wide open receptive gaze, highly perceptive and emotionally open',
+     desc:'感受性が豊か・外の世界をよく吸収する。印象に敏感。'},
+    {jp:'中間的な目 ― 適度な深さ・バランス',
+     en:'moderately set eyes, balanced orbital depth, neither deeply recessed nor prominently projecting, adaptable perceptive gaze',
+     desc:'観察と感受性のバランスが取れた中間型。'},
+  ]},
   light:{cls:'ss',multi:false,items:[
     {jp:'自然光・柔らか',en:'soft natural lighting, gentle daylight'},
     {jp:'ドラマチック影',en:'dramatic chiaroscuro lighting, deep shadows'},
@@ -744,6 +874,48 @@ Object.keys(G).forEach(k => sel[k] = new Set());
 let selEthnicity = null;
 let selSt = null;
 let freeTranslated = ''; // 自由記述の翻訳結果
+
+
+// ========== 顔相学プリセット ==========
+const PHYSIO_PRESETS = [
+  {jp:'🧠 哲学者・賢者', desc:'知性主導・収縮・高緊張・浮彫型',
+   set:{pzone:0, pexpand:1, ptension:0, pform:1, peye:0}},
+  {jp:'❤️ 芸術家・共感者', desc:'感情主導・拡張・中緊張・平面型',
+   set:{pzone:1, pexpand:0, ptension:1, pform:0, peye:1}},
+  {jp:'⚡ 戦士・実行者', desc:'本能主導・拡張・高緊張・前方型',
+   set:{pzone:2, pexpand:0, ptension:0, pform:2, peye:2}},
+  {jp:'🌿 包容者・養育者', desc:'中帯主導・拡張・低緊張・平面型',
+   set:{pzone:1, pexpand:0, ptension:2, pform:0, peye:2}},
+  {jp:'🔥 カリスマ・支配者', desc:'三帯均等・拡張・高緊張・前方型',
+   set:{pzone:5, pexpand:0, ptension:0, pform:2, peye:1}},
+  {jp:'🌙 神秘家・孤高', desc:'上帯主導・収縮・高緊張・後退型',
+   set:{pzone:0, pexpand:1, ptension:0, pform:3, peye:0}},
+  {jp:'⚖️ 調停者・外交官', desc:'三帯均等・中緊張・バランス型',
+   set:{pzone:5, pexpand:2, ptension:1, pform:0, peye:2}},
+  {jp:'🐉 野生・本能の体現', desc:'下帯主導・拡張・低緊張・前方型',
+   set:{pzone:2, pexpand:0, ptension:2, pform:2, peye:1}},
+];
+
+function renderPhysioPresets() {
+  const el = document.getElementById('c-ppreset');
+  if (!el) return;
+  el.innerHTML = '';
+  PHYSIO_PRESETS.forEach((p, pi) => {
+    const c = document.createElement('span');
+    c.className = 'chip sp';
+    c.title = p.desc;
+    c.textContent = p.jp;
+    c.onclick = () => {
+      // 各顔相学グループに一括設定
+      Object.entries(p.set).forEach(([k, idx]) => {
+        sel[k] = new Set([idx]);
+      });
+      ['pzone','pexpand','ptension','pform','peye'].forEach(k => rg(k));
+      up();
+    };
+    el.appendChild(c);
+  });
+}
 
 // ========== UI関数 ==========
 function sw(name) {
@@ -875,12 +1047,17 @@ function up() {
     else parts.push(s.en);
   }
 
-  // 2. 世界観・大枠（雰囲気をスタイルの次に確定）
+  // 2. 顔相学タイプ（スタイルの次・全体の骨格として）
+  ['pzone','pexpand','ptension','pform','peye'].forEach(k => {
+    if (G[k]) sel[k].forEach(i => { if(G[k].items[i].en) parts.push(G[k].items[i].en); });
+  });
+
+  // 3. 世界観・大枠（雰囲気をスタイルの次に確定）
   ['world','tone','role'].forEach(k => {
     sel[k].forEach(i => parts.push(G[k].items[i].en));
   });
 
-  // 3. 基本属性（キャラクターの土台）
+  // 4. 基本属性（キャラクターの土台）
   // 年齢
   sel['age'].forEach(i => {
     const item = G['age'].items[i];
@@ -893,27 +1070,27 @@ function up() {
   const eth = getEthnicityItem();
   if (eth) parts.push(eth.en);
 
-  // 4. 外見カラー（見た目の大枠）
+  // 5. 外見カラー（見た目の大枠）
   ['skin','eyecolor','haircolor','hairstyle'].forEach(k => {
     sel[k].forEach(i => parts.push(G[k].items[i].en));
   });
 
-  // 5. 顔の印象・パーツ詳細
+  // 6. 顔の印象・パーツ詳細
   ['overall','eyes','brows','mouth','jaw','nose','beard','scar'].forEach(k => {
     sel[k].forEach(i => parts.push(G[k].items[i].en));
   });
 
-  // 6. 感情・表情（顔の次に自然）
+  // 7. 感情・表情（顔の次に自然）
   ['emotion','eyeexpr','smile','mood'].forEach(k => {
     sel[k].forEach(i => parts.push(G[k].items[i].en));
   });
 
-  // 7. 体格・姿勢
+  // 8. 体格・姿勢
   ['build','muscle','silhouette','posture'].forEach(k => {
     sel[k].forEach(i => parts.push(G[k].items[i].en));
   });
 
-  // 8. 服装・アクセサリー・武器
+  // 9. 服装・アクセサリー・武器
   ['outfit','fabric','outfitcolor','accessory','weapon'].forEach(k => {
     sel[k].forEach(i => {
       const en = G[k].items[i].en;
@@ -921,13 +1098,13 @@ function up() {
     });
   });
 
-  // 9. 構図・アングル（カメラ指示）
+  // 10. 構図・アングル（カメラ指示）
   sel['angle'].forEach(i => parts.push(G['angle'].items[i].en));
 
-  // 10. ライティング（最後）
+  // 11. ライティング（最後）
   sel['light'].forEach(i => parts.push(G['light'].items[i].en));
 
-  // 11. 自由記述（翻訳済みテキスト）
+  // 12. 自由記述（翻訳済みテキスト）
   if (freeTranslated) parts.push(freeTranslated);
 
   // カウント
@@ -1001,6 +1178,7 @@ async function doTranslate() {
 }
 
 function clearFree() {
+  renderPhysioPresets();
   document.getElementById('free-input').value = '';
   document.getElementById('free-result').style.display = 'none';
   document.getElementById('translate-status').textContent = '';
@@ -1015,6 +1193,7 @@ function doReset() {
   renderEthnicity(); rSt();
   document.getElementById('wy').classList.remove('on');
   document.getElementById('sh').textContent = '';
+  renderPhysioPresets();
   document.getElementById('free-input').value = '';
   document.getElementById('free-result').style.display = 'none';
   document.getElementById('translate-status').textContent = '';
@@ -1025,6 +1204,8 @@ function doReset() {
 Object.keys(G).forEach(k => rg(k));
 renderEthnicity();
 rSt();
+renderPhysioPresets();
+renderPhysioPresets();
 </script>
 </body>
 </html>
