@@ -108,7 +108,7 @@ h1{font-size:20px;font-weight:600;margin-bottom:4px}
 </div>
 <div class="tabs">
   <button class="tab on" onclick="sw('base')">基本属性</button>
-  <button class="tab" onclick="sw('physio')">🔮 顔相学</button>
+  <button class="tab" onclick="sw('physio')">🧠 性格タイプ</button>
   <button class="tab" onclick="sw('color')">カラー・外見</button>
   <button class="tab" onclick="sw('face')">顔・表情</button>
   <button class="tab" onclick="sw('emotion')">感情・表情</button>
@@ -135,27 +135,27 @@ h1{font-size:20px;font-weight:600;margin-bottom:4px}
 <div id="tb-physio" class="panel">
 
   <div class="sec" style="background:#F9F4FD;border-color:#C9A8E0;margin-bottom:.75rem">
-    <div class="sl" style="color:#8B4F9E">🔮 相貌心理学（コルマン理論）について</div>
-    <p style="font-size:12px;color:#666;line-height:1.75">フランスの医師ルイ・コルマンが体系化した理論です。顔を<strong>3つのゾーン</strong>（上帯＝知性、中帯＝感情、下帯＝本能）と<strong>拡張／収縮</strong>の軸で読み解きます。以下から選ぶと、顔相学的に整合した特徴がプロンプトに自動反映されます。複数選択可能ですが、矛盾する組み合わせは避けることをお勧めします。</p>
+    <div class="sl" style="color:#8B4F9E">🧠 性格タイプから顔を逆算する</div>
+    <p style="font-size:12px;color:#666;line-height:1.75">「どんな人物か」を選ぶと、その性格に対応した顔の造形がプロンプトに自動反映されます。顔の見た目より<strong>性格・行動傾向</strong>から選んでください。まず下の<strong>プリセット</strong>から近いタイプを選ぶのがおすすめです。</p>
   </div>
 
   <!-- 主導ゾーン -->
   <div class="sec" style="margin-bottom:.75rem">
-    <div class="sl" style="color:#8B4F9E">主導ゾーン（最も発達した顔の領域）</div>
-    <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">顔を上・中・下に三分割したとき、どの領域が最も存在感があるか</p>
+    <div class="sl" style="color:#8B4F9E">思考・行動の中心はどこ？</div>
+    <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">この人物が物事に向き合うとき、何を一番よりどころにするか</p>
     <div class="chips" id="c-pzone"></div>
   </div>
 
   <!-- 拡張・収縮 -->
   <div class="r2">
     <div class="sec">
-      <div class="sl" style="color:#8B4F9E">拡張／収縮タイプ</div>
-      <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">顔全体の広がり・引き締まり</p>
+      <div class="sl" style="color:#8B4F9E">外の世界との向き合い方</div>
+      <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">この人物は環境に対して開かれているか、内側に向かうか</p>
       <div class="chips" id="c-pexpand"></div>
     </div>
     <div class="sec">
-      <div class="sl" style="color:#8B4F9E">顔の緊張度</div>
-      <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">筋肉の張り・皮膚の質感</p>
+      <div class="sl" style="color:#8B4F9E">エネルギーの質</div>
+      <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">この人物のエネルギーは鋭く速いか、ゆったり安定しているか</p>
       <div class="chips" id="c-ptension"></div>
     </div>
   </div>
@@ -163,13 +163,13 @@ h1{font-size:20px;font-weight:600;margin-bottom:4px}
   <!-- 顔の形態 -->
   <div class="r2">
     <div class="sec">
-      <div class="sl" style="color:#8B4F9E">顔の形態タイプ</div>
-      <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">コルマンの基本4形態</p>
+      <div class="sl" style="color:#8B4F9E">行動のスタイル</div>
+      <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">この人物は受け取るタイプか、働きかけるタイプか</p>
       <div class="chips" id="c-pform"></div>
     </div>
     <div class="sec">
-      <div class="sl" style="color:#8B4F9E">目の配置・深さ</div>
-      <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">眼窩の深さと目の突出度</p>
+      <div class="sl" style="color:#8B4F9E">観察・感受のスタイル</div>
+      <p style="font-size:11px;color:#aaa;margin-bottom:.5rem">この人物は深く観察するタイプか、感受性が豊かなタイプか</p>
       <div class="chips" id="c-peye"></div>
     </div>
   </div>
@@ -715,72 +715,72 @@ const G = {
 
   // ========== 顔相学データ ==========
   pzone:{cls:'sp',multi:false,items:[
-    {jp:'上帯主導（知性型）― 額が広く丸みを帯びて発達',
+    {jp:'知性型 ― 論理・思考で動く',
      en:'developed upper facial zone, broad high forehead with rounded fullness, intellectually dominant face, prominent brow ridge with cerebral quality',
      desc:'知性・抽象思考・観念の世界で力を発揮。論理的で内省的。'},
-    {jp:'中帯主導（感情型）― 目・鼻・頬が豊かで存在感がある',
+    {jp:'感情型 ― 感受性・共感で動く',
      en:'developed mid-facial zone, expressive eyes and prominent cheekbones, emotionally rich face, sensitive perceptive features with strong social presence',
      desc:'感受性・共感力・社交性が高い。芸術的センスを持つ。'},
-    {jp:'下帯主導（本能型）― 口・顎・下顎が力強く発達',
+    {jp:'本能型 ― 直感・行動力で動く',
      en:'developed lower facial zone, strong jaw and full lips, powerful chin, instinct-driven face with vital animal energy, dominant lower third',
      desc:'生命力・意志力・行動力が強い。現実的で実行力がある。'},
-    {jp:'上帯＋中帯（知性×感情）― 額と目元が共に豊か',
+    {jp:'知性×感情型 ― 思慮深く感受性も高い',
      en:'balanced upper and mid facial zones, broad forehead combined with expressive eyes, intellectually sensitive face, thoughtful and emotionally aware',
      desc:'知性と感受性を兼ね備えた芸術家・哲学者タイプ。'},
-    {jp:'中帯＋下帯（感情×本能）― 目元と顎が共に力強い',
+    {jp:'感情×本能型 ― 情熱的で行動的',
      en:'balanced mid and lower facial zones, expressive eyes with strong jaw, emotionally passionate face, sensual and driven character',
      desc:'情熱的で行動的。感情と本能が直結した強さを持つ。'},
-    {jp:'三帯均等（バランス型）― 上中下が均等に発達',
+    {jp:'バランス型 ― 知性・感情・本能が統合されている',
      en:'harmoniously balanced facial zones, equal development of forehead, mid-face, and jaw, well-proportioned features, versatile adaptive personality',
      desc:'知性・感情・本能がバランスよく統合された万能型。'},
   ]},
   pexpand:{cls:'sp',multi:false,items:[
-    {jp:'拡張型 ― 顔が丸みを帯びて広がる・パーツが豊か',
+    {jp:'開放型 ― 外向き・おおらか・環境を受け入れる',
      en:'expansive open facial structure, rounded generous features, wide face with soft outward-spreading quality, receptive and extroverted appearance',
      desc:'外向き・受容的・環境に開かれている。おおらかで社交的。'},
-    {jp:'収縮型 ― 顔が引き締まり・パーツが内側に凝縮',
+    {jp:'内省型 ― 内向き・集中力が高い・精神性を重視する',
      en:'contracted concentrated facial structure, features drawn inward, narrow refined face with tense quality, introverted focused appearance',
      desc:'内向き・集中力・精神性が高い。防衛的だが深みがある。'},
-    {jp:'拡張優位（収縮要素も持つ）',
+    {jp:'開放寄り ― 基本は社交的だが、内なる規律も持つ',
      en:'primarily expansive face with some concentrated features, outwardly open yet internally disciplined appearance',
      desc:'基本は開放的だが、内なる規律も持つ複合型。'},
-    {jp:'収縮優位（拡張要素も持つ）',
+    {jp:'内省寄り ― 基本は内向きだが、必要に応じて開かれる',
      en:'primarily contracted face with some expansive elements, inwardly focused yet capable of openness',
      desc:'基本は内向きだが、状況に応じて開放できる複合型。'},
   ]},
   ptension:{cls:'sp',multi:false,items:[
-    {jp:'高緊張 ― 筋肉が張り・輪郭がくっきり・皮膚が薄い',
+    {jp:'鋭敏型 ― 反応が速く・意志が強い・神経質になりやすい',
      en:'high facial muscle tone, sharp defined contours, taut skin, angular precise features, alert tense expression',
      desc:'意志が強く・反応が速い。神経質だが集中力が高い。'},
-    {jp:'中緊張 ― 適度な張りと柔らかさのバランス',
+    {jp:'安定型 ― バランスが良く・適応力が高い',
      en:'moderate facial tone, balanced between definition and softness, composed natural features',
      desc:'安定・適応力・バランス感覚に優れる。'},
-    {jp:'低緊張 ― 筋肉が柔らかく・輪郭が丸みを帯びる',
+    {jp:'温和型 ― ゆったりとした気質・穏やかで包容力がある',
      en:'low facial muscle tone, soft rounded contours, relaxed gentle features, placid unhurried expression',
      desc:'ゆったりとした気質。穏やかで包容力がある。'},
   ]},
   pform:{cls:'sp',multi:false,items:[
-    {jp:'平面型 ― 顔が平らで凹凸が少ない・受容的',
+    {jp:'受容型 ― 環境をよく吸収する・印象を受け取りやすい',
      en:'flat facial profile, minimal facial relief, smooth planar features, receptive open appearance without prominent protrusions',
      desc:'環境への適応力が高く・印象を受け取りやすい受容型。'},
-    {jp:'浮彫型 ― 顔に凹凸があり・パーツが際立つ・能動的',
+    {jp:'能動型 ― 自分から環境に働きかける・存在感が強い',
      en:'sculpted facial relief, prominent features with strong three-dimensional quality, bold projecting nose and brow, active assertive appearance',
      desc:'自分の意志で環境に働きかける能動型・印象が強い。'},
-    {jp:'前方型 ― 顔が前方に突き出す・積極的',
+    {jp:'積極型 ― 前に出る・行動的・押しが強い',
      en:'forward projecting facial profile, features thrust forward, prominent chin and brow, aggressive forward-leaning appearance',
      desc:'積極的・外向きのエネルギーを持つ。行動的で押しが強い。'},
-    {jp:'後退型 ― 顔が後方に傾く・内省的',
+    {jp:'思索型 ― 行動より思考を先行させる・内省的',
      en:'receding facial profile, features sloping backward, receding chin, contemplative inward-looking appearance',
      desc:'内省的・思索的。行動より思考を先行させる傾向。'},
   ]},
   peye:{cls:'sp',multi:false,items:[
-    {jp:'深く落ちくぼんだ目 ― 眼窩が深い・内省・観察',
+    {jp:'観察型の目 ― じっくり見る・観察力・距離を置いて見る',
      en:'deep-set eyes recessed in prominent brow ridge, shadowed eye sockets, observant contemplative gaze from within cave-like orbits',
      desc:'観察力・内省力が高い。外部から距離を置いて見る傾向。'},
-    {jp:'突出した目 ― 目が前に出ている・感受性・開放',
+    {jp:'感受型の目 ― 感受性豊か・外の世界をよく吸収する',
      en:'protruding prominent eyes, eyes that project forward from the face, wide open receptive gaze, highly perceptive and emotionally open',
      desc:'感受性が豊か・外の世界をよく吸収する。印象に敏感。'},
-    {jp:'中間的な目 ― 適度な深さ・バランス',
+    {jp:'バランス型の目 ― 観察と感受性のバランスが取れている',
      en:'moderately set eyes, balanced orbital depth, neither deeply recessed nor prominently projecting, adaptable perceptive gaze',
      desc:'観察と感受性のバランスが取れた中間型。'},
   ]},
